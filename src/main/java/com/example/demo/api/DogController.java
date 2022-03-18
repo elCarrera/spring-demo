@@ -1,27 +1,27 @@
 package com.example.demo.api;
 
-import com.example.demo.model.Person;
-import com.example.demo.service.PersonService;
+import com.example.demo.model.Dog;
+import com.example.demo.service.DogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("api/v1/student")
+@RequestMapping("api/v1/dog")
 @RestController
-public class PersonController {
+public class DogController {
 
-    private final PersonService personService;
+    private final DogService dogService;
 
     @Autowired
-    public PersonController(PersonService personService) {
-        this.personService = personService;
+    public DogController(DogService dogService) {
+        this.dogService = dogService;
     }
 
     @PostMapping
-    public void addStudent(@RequestBody Person person) {
-        personService.addStudent(person);
+    public void addDog(@RequestBody Dog dog) {
+        dogService.addDog(dog);
     }
 
 }
