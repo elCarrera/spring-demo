@@ -21,18 +21,17 @@ public class Dog {
     )
     private String name;
 
-    @Column(
-            name = "ownerId",
-            nullable = false
-    )
-    private Long ownerId;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Person ownerPerson;
 
     public Dog() {
     }
 
-    public Dog(String name, Long ownerId) {
+    public Dog(String name, Person ownerPerson) {
         this.name = name;
-        this.ownerId = ownerId;
+        this.ownerPerson = ownerPerson;
     }
 
     public Long getId() {
@@ -51,12 +50,12 @@ public class Dog {
         this.name = name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Person getOwnerPerson() {
+        return ownerPerson;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerPerson(Person ownerPerson) {
+        this.ownerPerson = ownerPerson;
     }
 
 }

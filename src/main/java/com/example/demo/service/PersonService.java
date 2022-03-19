@@ -15,8 +15,14 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    public void addStudent(Person person) {
+    public void addPerson(Person person) {
         personRepository.save(person);
     }
+
+    //addPerson
+    //getAllPeople
+    //getPersonById
+    //deletePerson
+    //updatePerson
 
 }

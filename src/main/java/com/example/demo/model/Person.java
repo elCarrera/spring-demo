@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -58,14 +60,18 @@ public class Person {
     )
     private Integer age;
 
+    @OneToMany
+    List<Dog> Dogs = new ArrayList<Dog>();
+
     public Person() {
     }
 
-    public Person(String firstName, String lastName, String email, Integer age) {
+    public Person(String firstName, String lastName, String email, Integer age, List<Dog> dogs) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        Dogs = dogs;
     }
 
     @Override
@@ -76,6 +82,7 @@ public class Person {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", Dogs=" + Dogs +
                 '}';
     }
 
@@ -117,5 +124,13 @@ public class Person {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public List<Dog> getDogs() {
+        return Dogs;
+    }
+
+    public void setDogs(List<Dog> dogs) {
+        Dogs = dogs;
     }
 }
