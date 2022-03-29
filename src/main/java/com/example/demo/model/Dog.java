@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity(name = "Dog")
@@ -21,17 +23,21 @@ public class Dog {
     )
     private String name;
 
-
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Person ownerPerson;
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "personId",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    private Person person;
 
     public Dog() {
     }
 
-    public Dog(String name, Person ownerPerson) {
+    public Dog(String name, Person person) {
         this.name = name;
-        this.ownerPerson = ownerPerson;
+        this.person = person;
     }
 
     public Long getId() {
@@ -50,12 +56,13 @@ public class Dog {
         this.name = name;
     }
 
-    public Person getOwnerPerson() {
-        return ownerPerson;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setOwnerPerson(Person ownerPerson) {
-        this.ownerPerson = ownerPerson;
+    public void setPerson(Person person) {
+        this.person = person;
     }
+
 
 }

@@ -1,30 +1,31 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Person")
 @Table(
-        name = "student",
+        name = "Person",
         uniqueConstraints = {
-                @UniqueConstraint(name = "student_email_unique", columnNames = "email")
+                @UniqueConstraint(name = "person_email_unique", columnNames = "email")
         }
 )
 public class Person {
 
     @Id
     @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
+            name = "person_sequence",
+            sequenceName = "person_sequence",
             allocationSize = 1
 
     )
     @GeneratedValue(
             strategy = SEQUENCE,
-            generator = "student_sequence"
+            generator = "person_sequence"
     )
     @Column(
             name = "id",
@@ -49,8 +50,7 @@ public class Person {
     @Column(
             name = "email",
             nullable = false,
-            columnDefinition = "TEXT",
-            unique = true
+            columnDefinition = "TEXT"
     )
     private String email;
 
@@ -60,13 +60,27 @@ public class Person {
     )
     private Integer age;
 
-    @OneToMany
-    List<Dog> Dogs = new ArrayList<Dog>();
+    @JsonManagedReference
+    @OneToMany(
+            mappedBy = "person"
+    )
+    private List<Dog> Dogs;
+
+
 
     public Person() {
     }
 
     public Person(String firstName, String lastName, String email, Integer age, List<Dog> dogs) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        Dogs = dogs;
+    }
+
+    public Person(Long id, String firstName, String lastName, String email, Integer age, List<Dog> dogs) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
