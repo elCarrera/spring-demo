@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DogService {
@@ -25,6 +26,10 @@ public class DogService {
         return dogRepository.findAll();
     }
 
+    public Optional<Dog> getDogById(Long id) {
+        return dogRepository.findById(id);
+    }
+
     public void addDog(Dog dog) {
         Person person = personRepository.findById(dog.getPerson().getId())
                 .orElseThrow();
@@ -32,5 +37,12 @@ public class DogService {
         dogRepository.save(dog);
     }
 
+    public void deleteDogById(Long id) {
+        dogRepository.deleteById(id);
+    }
+
+    public void updateDog(Dog dog) {
+        dogRepository.save(dog);
+    }
 
 }
