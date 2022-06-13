@@ -3,6 +3,7 @@ package com.example.demo.api;
 import com.example.demo.model.Dog;
 import com.example.demo.service.DogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,9 +40,9 @@ public class DogController {
         dogService.deleteDogById(id);
     }
 
-    @PostMapping(path = "/{id}")
-    public void updateDog(Dog dog) {
-        dogService.updateDog(dog);
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Dog> updateDog(Long id, Dog dog) {
+        return dogService.updateDog(id, dog);
     }
 
 }

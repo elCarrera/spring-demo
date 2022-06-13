@@ -5,6 +5,8 @@ import com.example.demo.model.Person;
 import com.example.demo.repository.DogRepository;
 import com.example.demo.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +43,14 @@ public class DogService {
         dogRepository.deleteById(id);
     }
 
-    public void updateDog(Dog dog) {
-        dogRepository.save(dog);
+    public ResponseEntity<Dog> updateDog(Long id, Dog dog) {
+        return (!dogRepository.existsById(id)
+                ? new ResponseEntity<>(dogRepository.save(dog),
+                HttpStatus.CREATED)
+                : new ResponseEntity<>(dogRepository.save(dog),
+                HttpStatus.OK));
+
+
     }
 
 }
