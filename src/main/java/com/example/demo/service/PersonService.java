@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.model.Person;
 import com.example.demo.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,12 +36,12 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public void updatePerson(Person person) {
-        personRepository.findById(person.getId())
-                .orElseThrow();
-        personRepository.save(person);
+    public ResponseEntity<Person> updatePerson(Long id, Person person) {
+        return (!personRepository.existsById(id))
+                ? new ResponseEntity<>(personRepository.save(person),
+                HttpStatus.CREATED)
+                : new ResponseEntity<>(personRepository.save(person),
+                HttpStatus.OK);
     }
-
-    
 
 }
