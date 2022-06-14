@@ -1,43 +1,47 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.PersonDao;
 import com.example.demo.model.Person;
+import com.example.demo.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PersonService {
 
-    private final PersonDao personDao;
+    private final PersonRepository personRepository;
 
     @Autowired
-    public PersonService(@Qualifier("postgres") PersonDao personDao) {
-        this.personDao = personDao;
+    public PersonService(PersonRepository personRepository){
+        this.personRepository = personRepository;
     }
 
-    public int addPerson(Person person){
-        return personDao.insertPerson(person);
+    public void addPerson(Person person) {
+        personRepository.save(person);
     }
 
     public List<Person> getAllPeople() {
-        return personDao.selectAllPeople();
-    }
-    
-    public Optional<Person> getPersonById(UUID id) {
-        return personDao.selectPersonById(id);
+        return personRepository.findAll();
     }
 
-    public  int deletePerson(UUID id) {
-        return personDao.deletePersonById(id);
+    public Optional<Person> getPersonById(Long id) {
+        return personRepository.findById(id);
     }
 
-    public int updatePerson(UUID id, Person newPerson) {
-        return personDao.updatePersonById(id, newPerson);
+    public void deletePerson(Long id) {
+        personRepository.deleteById(id);
+    }
+
+    public ResponseEntity<Person> updatePerson(Long id, Person person) {
+        return (!personRepository.existsById(id))
+                ? new ResponseEntity<>(personRepository.save(person),
+                HttpStatus.CREATED)
+                : new ResponseEntity<>(personRepository.save(person),
+                HttpStatus.OK);
     }
 
 }

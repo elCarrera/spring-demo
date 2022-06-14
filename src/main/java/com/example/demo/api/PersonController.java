@@ -3,13 +3,11 @@ package com.example.demo.api;
 import com.example.demo.model.Person;
 import com.example.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @RequestMapping("api/v1/person")
 @RestController
@@ -23,7 +21,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public void addPerson(@Valid @NonNull @RequestBody Person person) {
+    public void addPerson(@RequestBody Person person) {
         personService.addPerson(person);
     }
 
@@ -32,20 +30,19 @@ public class PersonController {
         return personService.getAllPeople();
     }
 
-    @GetMapping(path = "{id}")
-    public Person getPersonById(@PathVariable("id") UUID id) {
-        return personService.getPersonById(id)
-                .orElse(null);
+    @GetMapping(path = "/{id}")
+    public Optional<Person> gePersonById(@PathVariable Long id) {
+        return personService.getPersonById(id);
     }
 
-    @DeleteMapping(path =  "{id}")
-    public void deletePersonById(@PathVariable("id") UUID id) {
+    @DeleteMapping(path = "/{id}")
+    public void deletePersonById(@PathVariable Long id){
         personService.deletePerson(id);
     }
 
-    @PutMapping(path = "{id}")
-    public void updatePerson(@PathVariable("id") UUID id, @Valid @NonNull @RequestBody Person person) {
-        personService.updatePerson(id, person);
+    @PutMapping("/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person person) {
+        return personService.updatePerson(id, person);
     }
 
 }
